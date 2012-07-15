@@ -45,7 +45,9 @@ handle_winbind_getpwnam(cmd_rec *cmd)
 
   ret = wbcGetpwnam(cmd->argv[0], &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -70,7 +72,9 @@ handle_winbind_getpwuid(cmd_rec *cmd)
 
   ret = wbcGetpwuid(*((uid_t *) cmd->argv[0]), &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -95,7 +99,9 @@ handle_winbind_getgrnam(cmd_rec *cmd)
 
   ret = wbcGetgrnam(cmd->argv[0], &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -120,7 +126,9 @@ handle_winbind_getgrgid(cmd_rec *cmd)
 
   ret = wbcGetgrgid(*((gid_t *) cmd->argv[0]), &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -162,7 +170,9 @@ handle_winbind_getgroups(cmd_rec *cmd)
     /* FIXME: what about the case where users come from one auth
      * module, and groups come from us?
      */
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -233,7 +243,9 @@ handle_winbind_is_auth(cmd_rec *cmd)
       return PR_DECLINED(cmd);
     }
     /* FIXME: what to do on transient errors? */
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -287,7 +299,9 @@ handle_winbind_uid_name(cmd_rec *cmd)
 
   ret = wbcGetpwuid(*((uid_t *) cmd->argv[0]), &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -306,7 +320,9 @@ handle_winbind_gid_name(cmd_rec *cmd)
 
   ret = wbcGetgrgid(*((gid_t *) cmd->argv[0]), &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -325,7 +341,9 @@ handle_winbind_name_uid(cmd_rec *cmd)
 
   ret = wbcGetpwnam(cmd->argv[0], &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
@@ -344,7 +362,9 @@ handle_winbind_name_gid(cmd_rec *cmd)
 
   ret = wbcGetgrnam(cmd->argv[0], &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    printf("getpwnam(): %d\n", ret);
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": FIXME: %s",
+      wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
