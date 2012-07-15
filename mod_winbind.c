@@ -168,11 +168,16 @@ handle_winbind_getgroups(cmd_rec *cmd)
 
   ret = wbcGetgrgid(pw->pw_gid, &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": couldn't determine group name for user %s primary group %lu, skipping.", pw->pw_name, (unsigned long)pw->pw_gid);
+    pr_log_debug(DEBUG3,
+      MOD_WINBIND_VERSION ": couldn't determine group name "
+      "for user %s primary group %lu, skipping.", pw->pw_name,
+      (unsigned long)pw->pw_gid);
     return PR_DECLINED(cmd);
   }
 
-  pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": adding user %s primary group %s/%lu", pw->pw_name, gr->gr_name, (unsigned long)pw->pw_gid);
+  pr_log_debug(DEBUG3,
+    MOD_WINBIND_VERSION ": adding user %s primary group %s/%lu",
+    pw->pw_name, gr->gr_name, (unsigned long)pw->pw_gid);
   *((gid_t *) push_array(gids)) = pw->pw_gid;
   *((char **) push_array(groups)) = pstrdup(session.pool, gr->gr_name);
 
@@ -182,7 +187,8 @@ handle_winbind_getgroups(cmd_rec *cmd)
     return PR_DECLINED(cmd);
   }
 
-  pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": user %s has %u secondary groups",
+  pr_log_debug(DEBUG3,
+    MOD_WINBIND_VERSION ": user %s has %u secondary groups",
     pw->pw_name, num_groups);
   for (i = 0; i < num_groups; ++i) {
     ret = wbcGetgrgid(winbind_groups[i], &gr);
@@ -232,7 +238,8 @@ handle_winbind_is_auth(cmd_rec *cmd)
   }
 
   if (pr_auth_check(cmd->tmp_pool, NULL, username, cmd->argv[1])) {
-    pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": bad password for %s", pw->pw_name);
+    pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": bad password for %s",
+      pw->pw_name);
     return PR_ERROR_INT(cmd, PR_AUTH_BADPWD);
   }
 
