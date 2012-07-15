@@ -27,7 +27,7 @@
 
 #define MOD_WINBIND_VERSION	"mod_winbind/1.0"
 
-static int enable_winbind = 0;
+static int winbind_engine = 0;
 
 /* FIXME: make sure we aren't returning libwbclient-allocated structs
  * in proftpd module handlers.
@@ -39,7 +39,7 @@ handle_winbind_getpwnam(cmd_rec *cmd)
   struct passwd *pw, *ret_pw;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -66,7 +66,7 @@ handle_winbind_getpwuid(cmd_rec *cmd)
   struct passwd *pw, *ret_pw;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -93,7 +93,7 @@ handle_winbind_getgrnam(cmd_rec *cmd)
   struct group *gr, *ret_gr;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -120,7 +120,7 @@ handle_winbind_getgrgid(cmd_rec *cmd)
   struct group *gr, *ret_gr;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -153,7 +153,7 @@ handle_winbind_getgroups(cmd_rec *cmd)
                *groups = (array_header *) cmd->argv[2];
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -232,7 +232,7 @@ handle_winbind_is_auth(cmd_rec *cmd)
   struct passwd *pw;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -268,7 +268,7 @@ handle_winbind_check(cmd_rec *cmd)
 {
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -293,7 +293,7 @@ handle_winbind_uid_name(cmd_rec *cmd)
   struct passwd *pw;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -314,7 +314,7 @@ handle_winbind_gid_name(cmd_rec *cmd)
   struct group *gr;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -335,7 +335,7 @@ handle_winbind_name_uid(cmd_rec *cmd)
   struct passwd *pw;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -356,7 +356,7 @@ handle_winbind_name_gid(cmd_rec *cmd)
   struct group *gr;
   wbcErr ret;
 
-  if (!enable_winbind) {
+  if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
@@ -372,7 +372,7 @@ handle_winbind_name_gid(cmd_rec *cmd)
 }
 
 MODRET
-set_enable_winbind(cmd_rec *cmd)
+set_winbind_engine(cmd_rec *cmd)
 {
   int b;
   config_rec *c;
@@ -382,7 +382,7 @@ set_enable_winbind(cmd_rec *cmd)
 
   b = get_boolean(cmd, 1);
   if (b == -1) {
-    CONF_ERROR(cmd, "EnableWinbind: expected a boolean value for first argument.");
+    CONF_ERROR(cmd, "WinbindEngine: expected a boolean value for first argument.");
   }
 
   c = add_config_param(cmd->argv[0], 1, NULL);
@@ -396,9 +396,9 @@ winbind_getconf(void)
 {
   void *ptr;
 
-  ptr = get_param_ptr(main_server->conf, "EnableWinbind", FALSE);
+  ptr = get_param_ptr(main_server->conf, "WinbindEngine", FALSE);
   if (ptr) {
-    enable_winbind = *((int *) ptr);
+    winbind_engine = *((int *) ptr);
   }
 
   return 0;
@@ -413,7 +413,7 @@ static int winbind_mod_init(void) {
 }
 
 static conftable winbind_config[] = {
-  { "EnableWinbind", set_enable_winbind, NULL },
+  { "WinbindEngine", set_winbind_engine, NULL },
   { NULL, NULL, NULL },
 };
 
