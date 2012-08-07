@@ -273,23 +273,40 @@ handle_winbind_is_auth(cmd_rec *cmd)
 MODRET
 handle_winbind_check(cmd_rec *cmd)
 {
+  struct wbcAuthUserParams params;
+  struct wbcAuthUserInfo *info;
+  struct wbcAuthErrorInfo *error;
   wbcErr ret;
 
   if (!winbind_engine) {
     return PR_DECLINED(cmd);
   }
 
-  ret = wbcAuthenticateUser(cmd->argv[1], cmd->argv[2]);
+  params.account_name = cmd->argv[1];
+  params.domain_name = NULL;
+  params.workstation_name = NULL;
+  params.flags = 0;
+
+  params.level = WBC_AUTH_USER_LEVEL_PLAIN;
+  params.password.plaintext = cmd->argv[2];
+
+  ret = wbcAuthenticateUserEx(&params, &info, &error);
   if (!WBC_ERROR_IS_OK(ret)) {
     if (ret != WBC_ERR_AUTH_ERROR) {
       pr_log_pri(PR_LOG_ERR,
         MOD_WINBIND_VERSION ": authentication call failed for user %s: %s",
         cmd->argv[1], wbcErrorString(ret));
     }
-    pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": invalid credentials for %s",
-      cmd->argv[1]);
+    pr_log_debug(DEBUG3,
+      MOD_WINBIND_VERSION ": authentication for %s failed: %s (%s)",
+      cmd->argv[1], error->display_string, error->nt_string);
     return PR_ERROR(cmd);
   }
+
+  pr_log_debug(DEBUG3,
+    MOD_WINBIND_VERSION ": successful authentication for %s "
+    "to domain controller %s",
+    cmd->argv[1], info->logon_server);
   session.auth_mech = "mod_winbind.c";
   return PR_HANDLED(cmd);
 }
