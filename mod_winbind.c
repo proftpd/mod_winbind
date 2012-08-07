@@ -181,8 +181,8 @@ handle_winbind_getgroups(cmd_rec *cmd)
       return PR_DECLINED(cmd);
     }
     pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": unable to look up user %s to determine"
-      " primary group membership: %s",
+      MOD_WINBIND_VERSION ": unable to look up user %s to determine "
+      "primary group membership: %s",
       cmd->argv[0], wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
