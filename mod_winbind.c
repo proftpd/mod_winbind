@@ -437,23 +437,39 @@ set_winbind_engine(cmd_rec *cmd)
   return PR_HANDLED(cmd);
 }
 
+static int winbind_mod_init(void) {
+  pr_log_debug(DEBUG2, MOD_WINBIND_VERSION ": compiled using %s %d.%d",
+    WBCLIENT_VENDOR_VERSION, WBCLIENT_MAJOR_VERSION,
+    WBCLIENT_MINOR_VERSION);
+
+  return 0;
+}
+
 static int
-winbind_getconf(void)
+winbind_child_init(void)
 {
+  int ret;
   void *ptr;
+  struct wbcInterfaceDetails *details;
 
   ptr = get_param_ptr(main_server->conf, "WinbindEngine", FALSE);
   if (ptr) {
     winbind_engine = *((int *) ptr);
   }
 
-  return 0;
-}
-
-static int winbind_mod_init(void) {
-  pr_log_debug(DEBUG2, MOD_WINBIND_VERSION ": compiled using %s %d.%d",
-    WBCLIENT_VENDOR_VERSION, WBCLIENT_MAJOR_VERSION,
-    WBCLIENT_MINOR_VERSION);
+  ret = wbcInterfaceDetails(&details);
+  if (!WBC_ERROR_IS_OK(ret)) {
+    pr_log_pri(PR_LOG_ERR,
+      MOD_WINBIND_VERSION ": unable to contact winbindd: %s",
+      wbcErrorString(ret));
+  } else {
+    pr_log_debug(DEBUG3,
+      MOD_WINBIND_VERSION ": winbindd version %s, NetBIOS name %s, "
+      "NetBIOS domain %s, DNS domain %s",
+      details->winbind_version, details->netbios_name,
+      details->netbios_domain, details->dns_domain
+    );
+  }
 
   return 0;
 }
@@ -486,6 +502,6 @@ module winbind_module = {
   NULL, /* Command handlers */
   winbind_auth, /* Authentication handlers */
   winbind_mod_init, /* Initialization functions */
-  winbind_getconf,
-  MOD_WINBIND_VERSION
+  winbind_child_init,
+  MOD_WINBIND_VERSION,
 };
