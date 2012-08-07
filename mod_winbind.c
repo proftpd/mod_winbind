@@ -41,9 +41,11 @@ handle_winbind_getpwnam(cmd_rec *cmd)
 
   ret = wbcGetpwnam(cmd->argv[0], &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_USER) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up user %s: %s",
+        cmd->argv[0], wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -68,9 +70,11 @@ handle_winbind_getpwuid(cmd_rec *cmd)
 
   ret = wbcGetpwuid(*((uid_t *) cmd->argv[0]), &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_GROUP) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up group %s: %s",
+        cmd->argv[0], wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -95,9 +99,11 @@ handle_winbind_getgrnam(cmd_rec *cmd)
 
   ret = wbcGetgrnam(cmd->argv[0], &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_GROUP) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up group %s: %s",
+        cmd->argv[0], wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -122,9 +128,11 @@ handle_winbind_getgrgid(cmd_rec *cmd)
 
   ret = wbcGetgrgid(*((gid_t *) cmd->argv[0]), &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_GROUP) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up group with GID %u: %s",
+        *((unsigned *) cmd->argv[0]), wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -295,9 +303,11 @@ handle_winbind_uid_name(cmd_rec *cmd)
 
   ret = wbcGetpwuid(*((uid_t *) cmd->argv[0]), &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_USER) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up user %s: %s",
+        cmd->argv[0], wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -316,9 +326,11 @@ handle_winbind_gid_name(cmd_rec *cmd)
 
   ret = wbcGetgrgid(*((gid_t *) cmd->argv[0]), &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_GROUP) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up group with GID %u: %s",
+        *((unsigned *) cmd->argv[0]), wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -338,9 +350,11 @@ handle_winbind_name_uid(cmd_rec *cmd)
 
   ret = wbcGetpwnam(cmd->argv[0], &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_USER) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up user %s: %s",
+        cmd->argv[0], wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
@@ -366,9 +380,11 @@ handle_winbind_name_gid(cmd_rec *cmd)
 
   ret = wbcGetgrnam(cmd->argv[0], &gr);
   if (!WBC_ERROR_IS_OK(ret)) {
-    pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+    if (ret != WBC_ERR_UNKNOWN_GROUP) {
+      pr_log_pri(PR_LOG_ERR,
+        MOD_WINBIND_VERSION ": unable to look up group %s: %s",
+        cmd->argv[0], wbcErrorString(ret));
+    }
     return PR_DECLINED(cmd);
   }
 
