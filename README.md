@@ -11,21 +11,21 @@ Setup
 * Make sure mod_winbind is compiled into ProFTPD on your system,
   or that mod_winbind.so is available as a DSO.
 
-  ** If not, [read the general instructions on compiling ProFTPD]
-     (http://www.proftpd.org/docs/howto/Compiling.html) or
-     [building ProFTPD modules as DSOs]
-     (http://proftpd.org/docs/howto/DSO.html).
+  * If not, [read the general instructions on compiling ProFTPD]
+    (http://www.proftpd.org/docs/howto/Compiling.html) or
+    [building ProFTPD modules as DSOs]
+    (http://proftpd.org/docs/howto/DSO.html).
 
-     Copying mod_winbind.c into proftpd-version/contrib/ and building
-     ProFTPD with './configure --with-modules=mod_winbind' is a good start.
+    Copying mod_winbind.c into proftpd-version/contrib/ and building
+    ProFTPD with './configure --with-modules=mod_winbind' is a good start.
 
 * Enable mod_winbind in your proftpd.conf:
 
-    WinbindEngine on
+      WinbindEngine on
 
   To automatically create home directories for your users, also add:
 
-    CreateHome on
+      CreateHome on
 
 
 Configuring winbindd
