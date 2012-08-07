@@ -252,13 +252,11 @@ handle_winbind_is_auth(cmd_rec *cmd)
   ret = wbcGetpwnam(cmd->argv[0], &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
     if (ret == WBC_ERR_UNKNOWN_USER) {
-      /* Let other modules have a shot. */
       return PR_DECLINED(cmd);
     }
-    /* FIXME: what to do on transient errors? */
     pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+      MOD_WINBIND_VERSION ": unable to look up user %s: %s",
+      cmd->argv[0], wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
