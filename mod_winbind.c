@@ -258,9 +258,7 @@ handle_winbind_is_auth(cmd_rec *cmd)
     return PR_DECLINED(cmd);
   }
 
-  if (pr_auth_check(cmd->tmp_pool, NULL, username, cmd->argv[1])) {
-    pr_log_debug(DEBUG3, MOD_WINBIND_VERSION ": bad password for %s",
-      pw->pw_name);
+  if (pr_auth_check(cmd->tmp_pool, NULL, username, cmd->argv[1]) != PR_AUTH_OK) {
     return PR_ERROR_INT(cmd, PR_AUTH_BADPWD);
   }
 
