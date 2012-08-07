@@ -29,10 +29,6 @@
 
 static int winbind_engine = 0;
 
-/* FIXME: make sure we aren't returning libwbclient-allocated structs
- * in proftpd module handlers.
- */
-
 MODRET
 handle_winbind_getpwnam(cmd_rec *cmd)
 {
@@ -333,6 +329,7 @@ MODRET
 handle_winbind_name_uid(cmd_rec *cmd)
 {
   struct passwd *pw;
+  uid_t *ret_uid;
   wbcErr ret;
 
   if (!winbind_engine) {
@@ -347,13 +344,20 @@ handle_winbind_name_uid(cmd_rec *cmd)
     return PR_DECLINED(cmd);
   }
 
-  return mod_create_data(cmd, (void *) &pw->pw_uid);
+  /* We don't *have* to copy the value, since the ProFTPD core code
+   * dereferences the returned pointer immediately after we return it,
+   * but it's nice to be safe.
+   */
+  ret_uid = palloc(session.pool, sizeof(pw->pw_uid));
+  *ret_uid = pw->pw_uid;
+  return mod_create_data(cmd, (void *) ret_uid);
 }
 
 MODRET
 handle_winbind_name_gid(cmd_rec *cmd)
 {
   struct group *gr;
+  gid_t *ret_gid;
   wbcErr ret;
 
   if (!winbind_engine) {
@@ -368,7 +372,13 @@ handle_winbind_name_gid(cmd_rec *cmd)
     return PR_DECLINED(cmd);
   }
 
-  return mod_create_data(cmd, (void *) &gr->gr_gid);
+  /* We don't *have* to copy the value, since the ProFTPD core code
+   * dereferences the returned pointer immediately after we return it,
+   * but it's nice to be safe.
+   */
+  ret_gid = palloc(session.pool, sizeof(gr->gr_gid));
+  *ret_gid = gr->gr_gid;
+  return mod_create_data(cmd, (void *) ret_gid);
 }
 
 MODRET
