@@ -29,6 +29,16 @@
 
 static int winbind_engine = 0;
 
+/* When a Winbind user doesn't exist (WBC_ERR_UNKNOWN_{GROUP,USER}),
+ * we generally return PR_DECLINED() so other modules can make an
+ * attempt.
+ *
+ * To make mod_winbind authoritative, use ProFTPD's AuthOrder directive,
+ * such as:
+ *
+ *   AuthOrder mod_winbind.c*
+ */
+
 MODRET
 handle_winbind_getpwnam(cmd_rec *cmd)
 {
@@ -170,7 +180,6 @@ handle_winbind_getgroups(cmd_rec *cmd)
     if (ret == WBC_ERR_UNKNOWN_USER) {
       return PR_DECLINED(cmd);
     }
-    /* FIXME: what to do on transient errors? */
     /* FIXME: what about the case where users come from one auth
      * module, and groups come from us?
      */
