@@ -180,12 +180,10 @@ handle_winbind_getgroups(cmd_rec *cmd)
     if (ret == WBC_ERR_UNKNOWN_USER) {
       return PR_DECLINED(cmd);
     }
-    /* FIXME: what about the case where users come from one auth
-     * module, and groups come from us?
-     */
     pr_log_pri(PR_LOG_ERR,
-      MOD_WINBIND_VERSION ": FIXME: %s",
-      wbcErrorString(ret));
+      MOD_WINBIND_VERSION ": unable to look up user %s to determine"
+      " primary group membership: %s",
+      cmd->argv[0], wbcErrorString(ret));
     return PR_DECLINED(cmd);
   }
 
