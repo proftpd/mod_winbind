@@ -193,8 +193,8 @@ handle_winbind_getgroups(cmd_rec *cmd)
   if (!WBC_ERROR_IS_OK(ret)) {
     pr_log_debug(DEBUG3,
       MOD_WINBIND_VERSION ": couldn't determine group name "
-      "for user %s primary group %lu, skipping.", pw->pw_name,
-      (unsigned long)pw->pw_gid);
+      "for user %s primary group %lu, skipping.",
+      pw->pw_name, (unsigned long)pw->pw_gid);
     return PR_DECLINED(cmd);
   }
 
