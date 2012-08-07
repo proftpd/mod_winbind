@@ -21,11 +21,11 @@ Setup
 
 * Enable mod_winbind in your proftpd.conf:
 
-      WinbindEngine on
+    WinbindEngine on
 
-  To automatically create home directories for your users, also add:
+* To automatically create home directories for your users, also add:
 
-      CreateHome on
+    CreateHome on
 
 
 Configuring winbindd
