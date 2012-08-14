@@ -27,6 +27,13 @@ Setup
 
         CreateHome on
 
+* By default, mod_winbind isn't authoritative. When a user doesn't exist
+  in the Windows domain, other ProFTPD authentication modules are given
+  the chance to authenticate the user, so local Unix users and groups
+  can be used. If you want ProFTPD to only use the Windows domain, add:
+
+        AuthOrder mod_winbind.c*
+
 
 Configuring the Winbind Daemon
 ==============================

@@ -29,16 +29,6 @@
 
 static int winbind_engine = 0;
 
-/* When a Winbind user doesn't exist (WBC_ERR_UNKNOWN_{GROUP,USER}),
- * we generally return PR_DECLINED() so other modules can make an
- * attempt.
- *
- * To make mod_winbind authoritative, use ProFTPD's AuthOrder directive,
- * such as:
- *
- *   AuthOrder mod_winbind.c*
- */
-
 MODRET
 handle_winbind_getpwnam(cmd_rec *cmd)
 {
