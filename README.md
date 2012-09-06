@@ -18,6 +18,8 @@ Setup
 
      Copying mod_winbind.c into proftpd-version/contrib/ and building
      ProFTPD with './configure --with-modules=mod_winbind' is a good start.
+     You'll need Samba's Winbind client library, libwbclient, and its
+     development header, wbclient.h, to compile mod_winbind.
 
 * Enable mod_winbind in your proftpd.conf:
 
