@@ -72,8 +72,8 @@ handle_winbind_getpwuid(cmd_rec *cmd)
   if (!WBC_ERROR_IS_OK(ret)) {
     if (ret != WBC_ERR_UNKNOWN_GROUP) {
       pr_log_pri(PR_LOG_ERR,
-        MOD_WINBIND_VERSION ": unable to look up group %s: %s",
-        cmd->argv[0], wbcErrorString(ret));
+        MOD_WINBIND_VERSION ": unable to look up UID %u: %s",
+        *((unsigned *) cmd->argv[0]), wbcErrorString(ret));
     }
     return PR_DECLINED(cmd);
   }
@@ -181,14 +181,14 @@ handle_winbind_getgroups(cmd_rec *cmd)
   if (!WBC_ERROR_IS_OK(ret)) {
     pr_log_debug(DEBUG3,
       MOD_WINBIND_VERSION ": couldn't determine group name "
-      "for user %s primary group %lu, skipping.",
-      pw->pw_name, (unsigned long)pw->pw_gid);
+      "for user %s primary group %u, skipping.",
+      pw->pw_name, *((unsigned *) pw->pw_gid));
     return PR_DECLINED(cmd);
   }
 
   pr_log_debug(DEBUG3,
-    MOD_WINBIND_VERSION ": adding user %s primary group %s/%lu",
-    pw->pw_name, gr->gr_name, (unsigned long)pw->pw_gid);
+    MOD_WINBIND_VERSION ": adding user %s primary group %s/%u",
+    pw->pw_name, gr->gr_name, *((unsigned *) pw->pw_gid));
   *((gid_t *) push_array(gids)) = pw->pw_gid;
   *((char **) push_array(groups)) = pstrdup(session.pool, gr->gr_name);
 
@@ -315,8 +315,8 @@ handle_winbind_uid_name(cmd_rec *cmd)
   if (!WBC_ERROR_IS_OK(ret)) {
     if (ret != WBC_ERR_UNKNOWN_USER) {
       pr_log_pri(PR_LOG_ERR,
-        MOD_WINBIND_VERSION ": unable to look up user %s: %s",
-        cmd->argv[0], wbcErrorString(ret));
+        MOD_WINBIND_VERSION ": unable to look up user with UID %u: %s",
+        *((unsigned *) cmd->argv[0]), wbcErrorString(ret));
     }
     return PR_DECLINED(cmd);
   }
