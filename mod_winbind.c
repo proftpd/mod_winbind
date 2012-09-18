@@ -182,13 +182,13 @@ handle_winbind_getgroups(cmd_rec *cmd)
     pr_log_debug(DEBUG3,
       MOD_WINBIND_VERSION ": couldn't determine group name "
       "for user %s primary group %u, skipping.",
-      pw->pw_name, *((unsigned *) pw->pw_gid));
+      pw->pw_name, (unsigned) pw->pw_gid);
     return PR_DECLINED(cmd);
   }
 
   pr_log_debug(DEBUG3,
     MOD_WINBIND_VERSION ": adding user %s primary group %s/%u",
-    pw->pw_name, gr->gr_name, *((unsigned *) pw->pw_gid));
+    pw->pw_name, gr->gr_name, (unsigned) pw->pw_gid);
   *((gid_t *) push_array(gids)) = pw->pw_gid;
   *((char **) push_array(groups)) = pstrdup(session.pool, gr->gr_name);
 
