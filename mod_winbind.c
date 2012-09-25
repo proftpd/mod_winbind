@@ -70,7 +70,7 @@ handle_winbind_getpwuid(cmd_rec *cmd)
 
   ret = wbcGetpwuid(*((uid_t *) cmd->argv[0]), &pw);
   if (!WBC_ERROR_IS_OK(ret)) {
-    if (ret != WBC_ERR_UNKNOWN_GROUP) {
+    if (ret != WBC_ERR_UNKNOWN_USER) {
       pr_log_pri(PR_LOG_ERR,
         MOD_WINBIND_VERSION ": unable to look up UID %u: %s",
         *((unsigned *) cmd->argv[0]), wbcErrorString(ret));
