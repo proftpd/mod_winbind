@@ -56,3 +56,7 @@ For example:
 
 Users will be assigned UIDs and GIDs between 10000 and 20000, and their home
 directories will be placed in /home.
+
+Then, join the Windows domain:
+
+    net rpc join -S domain-controller.example.com -U Administrator
