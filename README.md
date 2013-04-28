@@ -5,6 +5,14 @@ mod_winbind is a ProFTPD module that uses Samba's winbind daemon to
 authenticate Windows domain users.
 
 
+Orphaned
+========
+
+I'm no longer actively maintaining mod_winbind; it is **orphaned**. If you
+have some programming experience and would like to take over maintainership,
+I'd be happy to answer questions and provide initial guidance.
+
+
 Setup
 =====
 
