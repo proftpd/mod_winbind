@@ -24,9 +24,9 @@ Setup
 
      Copying `mod_winbind.c` into `proftpd-`_version_`/contrib/` and building
      ProFTPD with:
-```
-$ ./configure --with-modules=mod_winbind
-```
+
+         $ ./configure --with-modules=mod_winbind
+
      is a good start.  You'll need Samba's Winbind client library,
      `libwbclient`, *and* its development header, `wbclient.h`, to compile
      `mod_winbind`.
@@ -52,7 +52,7 @@ $ ./configure --with-modules=mod_winbind
 Configuring the Winbind Daemon
 ==============================
 
-Install Samba(http://www.samba.org/) and configure Winbind in `smb.conf`.
+Install [Samba](http://www.samba.org/) and configure Winbind in `smb.conf`.
 For example:
 
     [global]
